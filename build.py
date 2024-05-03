@@ -9,29 +9,41 @@ wix_root_url = "https://katarinaquartet.wixsite.com/"
 crawl_dir = Path("crawl")
 out_dir = Path("docs")
 
-html_files = [(PurePosixPath(v0), Path(v1)) for (v0, v1) in (
-	("/website", "index.html"),
-	("/website/about", "about"),
-	("/website/calendar", "calendar"),
-	("/website/contact", "contact"),
-	("/website/media", "media"),
-	("/website/photo-2", "photo-2"),
-	("/website/photo1", "photo1")
-)]
+html_files = [
+]
+
+def pick_file_path(name):
+	base = PurePosixPath(name)
+	if base.suffix == ".html":
+		return base
+	else:
+		return base.joinpath("index.html")
+
+html_files = [(PurePosixPath("/website").joinpath(item), pick_file_path(item)) for item in [
+	"",
+	"about",
+	"calendar",
+	"contact",
+	"media",
+	"photo-2",
+	"photo1"
+]]
 
 def do_crawl():
-	crawl_dir.mkdir(exist_ok=True)
 	for (url_path, file_path) in html_files:
 		url_components = list(urlparse(wix_root_url))
 		url_components[2] = str(url_path)
 		full_url = urlunparse(url_components)
-		subprocess.run(["wget", "-O", crawl_dir.joinpath(file_path), "--", full_url], check=True)
+		file_path = crawl_dir.joinpath(file_path)
+		file_path.parent.mkdir(parents=True, exist_ok=True)
+		subprocess.run(["wget", "-O", file_path, "--", full_url], check=True)
 
 def do_build():
-	out_dir.mkdir(exist_ok=True)
 	for (url_path, file_path) in html_files:
 		file_path = Path(file_path)
-		with crawl_dir.joinpath(file_path).open("r") as in_file, out_dir.joinpath(file_path).open("w") as out_file:
+		out_path = out_dir.joinpath(file_path)
+		out_path.parent.mkdir(parents=True, exist_ok=True)
+		with crawl_dir.joinpath(file_path).open("r") as in_file, out_path.open("w") as out_file:
 			html = parse(in_file, treebuilder="dom")
 			xfrm_traverse(html)
 			out_file.write(serialize(html, tree="dom"))
