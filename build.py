@@ -50,18 +50,24 @@ def do_build():
 
 def xfrm_traverse(url_path, dom_node):
 	if dom_node.nodeType == 1:
-		if dom_node.nodeName == "a":
+		if dom_node.tagName == "a":
 			href_components = list(urlparse(dom_node.getAttribute("href")))
 			href_path = PurePosixPath(href_components[2])
 			if href_components[1] == "katarinaquartet.wixsite.com" and href_path.is_relative_to("/website"):
 				href_components[:3] = ("", "", str(super_relativize(href_path, url_path)))
 				dom_node.setAttribute("href", urlunparse(href_components))
-		elif dom_node.nodeName == "link" and dom_node.getAttribute("href") == "https://www.wix.com/favicon.ico":
+		elif dom_node.tagName == "link" and dom_node.getAttribute("href") == "https://www.wix.com/favicon.ico":
 			dom_node.parentNode.removeChild(dom_node)
 		elif dom_node.getAttribute("id") == "WIX_ADS":
 			dom_node.parentNode.removeChild(dom_node)
 	for child in dom_node.childNodes:
 		xfrm_traverse(url_path, child)
+	if dom_node.nodeType == 1 and dom_node.tagName == "head":
+		style_node = dom_node.ownerDocument.createElement("style")
+		style_node.appendChild(dom_node.ownerDocument.createTextNode(
+			":root { --wix-ads-height: 0 }"
+		))
+		dom_node.appendChild(style_node)
 
 # Make an absolute path relative to another absolute path, using ".." segments when necessary
 def super_relativize(path, base):
