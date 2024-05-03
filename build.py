@@ -65,7 +65,7 @@ def xfrm_traverse(url_path, dom_node):
 	if dom_node.nodeType == 1 and dom_node.tagName == "head":
 		style_node = dom_node.ownerDocument.createElement("style")
 		style_node.appendChild(dom_node.ownerDocument.createTextNode(
-			":root { --wix-ads-height: 0 }"
+			":root { --wix-ads-height: 0 !important }"
 		))
 		dom_node.appendChild(style_node)
 
