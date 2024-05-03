@@ -45,23 +45,34 @@ def do_build():
 		out_path.parent.mkdir(parents=True, exist_ok=True)
 		with crawl_dir.joinpath(file_path).open("r") as in_file, out_path.open("w") as out_file:
 			html = parse(in_file, treebuilder="dom")
-			xfrm_traverse(html)
+			xfrm_traverse(url_path, html)
 			out_file.write(serialize(html, tree="dom"))
 
-def xfrm_traverse(dom_node):
+def xfrm_traverse(url_path, dom_node):
 	if dom_node.nodeType == 1:
 		if dom_node.nodeName == "a":
 			href_components = list(urlparse(dom_node.getAttribute("href")))
 			href_path = PurePosixPath(href_components[2])
 			if href_components[1] == "katarinaquartet.wixsite.com" and href_path.is_relative_to("/website"):
-				href_components[:3] = ("", "", str(href_path.relative_to("/website")))
+				href_components[:3] = ("", "", str(super_relativize(href_path, url_path)))
 				dom_node.setAttribute("href", urlunparse(href_components))
 		elif dom_node.nodeName == "link" and dom_node.getAttribute("href") == "https://www.wix.com/favicon.ico":
 			dom_node.parentNode.removeChild(dom_node)
 		elif dom_node.getAttribute("id") == "WIX_ADS":
 			dom_node.parentNode.removeChild(dom_node)
 	for child in dom_node.childNodes:
-		xfrm_traverse(child)
+		xfrm_traverse(url_path, child)
+
+# Make an absolute path relative to another absolute path, using ".." segments when necessary
+def super_relativize(path, base):
+	trail = PurePosixPath("")
+	for _ in range(10000):
+		if path.is_relative_to(base):
+			return trail.joinpath(path.relative_to(base))
+		assert base != base.parent
+		base = base.parent
+		trail = trail.joinpath("..")
+	raise RuntimeError("path has too many segments")
 
 def main():
 	parser = ArgumentParser()
