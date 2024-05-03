@@ -37,19 +37,19 @@ def do_build():
 			out_file.write(serialize(html, tree="dom"))
 
 def xfrm_traverse(dom_node):
-	if dom_node.nodeType == 3:
+	if dom_node.nodeType == 1:
 		if dom_node.nodeName == "a":
-			href_components = list(urlparse(href_attr.getAttributeNode("href")))
+			href_components = list(urlparse(dom_node.getAttribute("href")))
 			href_path = PurePosixPath(href_components[2])
-			if href_components[1] == "katarinaquartet.wixsite.com" and href_components[2].is_relative_to("/website"):
-				href_components[3:] = ("", "", str(href_components[2].relative_to("/website")))
-				href_attr.nodeValue = urlunparse(href_components)
+			if href_components[1] == "katarinaquartet.wixsite.com" and href_path.is_relative_to("/website"):
+				href_components[:3] = ("", "", str(href_path.relative_to("/website")))
+				dom_node.setAttribute("href", urlunparse(href_components))
 		elif dom_node.nodeName == "link" and dom_node.getAttribute("href") == "https://www.wix.com/favicon.ico":
 			dom_node.parentNode.removeChild(dom_node)
 		elif dom_node.getAttribute("id") == "WIX_ADS":
 			dom_node.parentNode.removeChild(dom_node)
-		for child in dom_node.childNodes:
-			xfrm_traverse(child)
+	for child in dom_node.childNodes:
+		xfrm_traverse(child)
 
 def main():
 	parser = ArgumentParser()
