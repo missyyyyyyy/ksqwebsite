@@ -1,0 +1,1 @@
+jpegtran -crop '4598x1884+0+690' Downloads/IMG_2944\ \(1\).JPG >docs/IMG_2944_crop.jpeg
