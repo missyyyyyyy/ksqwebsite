@@ -67,7 +67,7 @@ def xfrm_traverse(url_path, dom_node):
 			dom_node.parentNode.removeChild(dom_node)
 		elif dom_node.getAttribute("id") == "WIX_ADS":
 			dom_node.parentNode.removeChild(dom_node)
-		elif dom_node.tagName == "img" and dom_node.getAttribute("src") == "https://static.wixstatic.com/media/377e36_48b2418a81784725ad2f9ba1d7726b42~mv2.jpg/v1/fill/w_147,h_98,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_auto/377e36_48b2418a81784725ad2f9ba1d7726b42~mv2.jpg":
+		elif dom_node.tagName == "img" and dom_node.getAttribute("src") == "https://static.wixstatic.com/media/377e36_949307df43a148dba4346538db3089d2~mv2.jpg/v1/fill/w_147,h_98,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_auto/377e36_949307df43a148dba4346538db3089d2~mv2.jpg":
 			dom_node.setAttribute("src", "IMG_2944_crop.jpeg")
 		elif dom_node.tagName == "div" and dom_node.getAttribute("id") in yt_embeds:
 			yt_vid = yt_embeds[dom_node.getAttribute("id")]
@@ -78,7 +78,7 @@ def xfrm_traverse(url_path, dom_node):
 			yt_iframe.setAttribute("height", "100%")
 			yt_iframe.setAttribute("frameborder", "0")
 			dom_node.appendChild(yt_iframe)
-			dom_node.setAttribute("id", "")
+			#dom_node.setAttribute("id", "")
 	for child in dom_node.childNodes:
 		xfrm_traverse(url_path, child)
 	if dom_node.nodeType == 1 and dom_node.tagName == "head":
