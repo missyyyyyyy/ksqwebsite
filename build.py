@@ -78,6 +78,7 @@ def xfrm_traverse(url_path, dom_node):
 			yt_iframe.setAttribute("height", "100%")
 			yt_iframe.setAttribute("frameborder", "0")
 			dom_node.appendChild(yt_iframe)
+			dom_node.setAttribute("id", "")
 	for child in dom_node.childNodes:
 		xfrm_traverse(url_path, child)
 	if dom_node.nodeType == 1 and dom_node.tagName == "head":
