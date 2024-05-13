@@ -20,7 +20,7 @@ def pick_file_path(name):
 		return base.joinpath("index.html")
 
 html_files = [(PurePosixPath("/website").joinpath(item), pick_file_path(item)) for item in [
-	"",
+#	"",
 	"about",
 	"calendar",
 	"contact",
@@ -67,18 +67,23 @@ def xfrm_traverse(url_path, dom_node):
 			dom_node.parentNode.removeChild(dom_node)
 		elif dom_node.getAttribute("id") == "WIX_ADS":
 			dom_node.parentNode.removeChild(dom_node)
-		elif dom_node.tagName == "img" and dom_node.getAttribute("src") == "https://static.wixstatic.com/media/377e36_949307df43a148dba4346538db3089d2~mv2.jpg/v1/fill/w_147,h_98,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_auto/377e36_949307df43a148dba4346538db3089d2~mv2.jpg":
-			dom_node.setAttribute("src", "IMG_2944_crop.jpeg")
+#		elif dom_node.tagName == "img" and dom_node.getAttribute("src") == "https://static.wixstatic.com/media/377e36_949307df43a148dba4346538db3089d2~mv2.jpg/v1/fill/w_147,h_98,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_auto/377e36_949307df43a148dba4346538db3089d2~mv2.jpg":
+#			dom_node.setAttribute("src", "IMG_2944_crop.jpeg")
 #		elif dom_node.getAttribute("data-src"):
 #			dom_node.setAttribute("data-src", "IMG_2944_crop.jpeg")
-		elif dom_node.getAttribute("class") == "cM88eO":
-			dom_node.parentNode.removeChild(dom_node)
-		elif 'lsvsgd2b' in dom_node.getAttribute("id"):
-			dom_node.setAttribute("id", "")
-			if dom_node.getAttribute("data-src"):
-				dom_node.removeAttribute("data-src")
-			if dom_node.getAttribute("class"):
-				dom_node.removeAttribute("class")
+#		elif dom_node.getAttribute("class") == "cM88eO":
+#			dom_node.parentNode.removeChild(dom_node)
+#		elif 'lsvsgd2b' in dom_node.getAttribute("id"):
+#			for c in dom_node.childNodes:
+#				dom_node.removeChild(c)
+#			img_node = dom_node.ownerDocument.createElement("img")
+#			img_node.setAttribute("src", "IMG_2944_crop.jpeg")
+#			img_node.setAttribute("style", "width: 1916px; height: 1062px; object-fit: cover; object-position: 50% 50%;")
+#			dom_node.setAttribute("id", "")
+#			if dom_node.getAttribute("data-src"):
+#				dom_node.removeAttribute("data-src")
+#			if dom_node.getAttribute("class"):
+#				dom_node.removeAttribute("class")
 		elif dom_node.tagName == "div" and dom_node.getAttribute("id") in yt_embeds:
 			yt_vid = yt_embeds[dom_node.getAttribute("id")]
 			yt_iframe = dom_node.ownerDocument.createElement("iframe")
