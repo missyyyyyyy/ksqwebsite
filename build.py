@@ -69,6 +69,12 @@ def xfrm_traverse(url_path, dom_node):
 			dom_node.parentNode.removeChild(dom_node)
 		elif dom_node.tagName == "img" and "377e36_949307df43a148dba4346538db3089d2~mv2.jpg" in dom_node.getAttribute("src"):
 			dom_node.setAttribute("src", "IMG_2944_crop.jpeg")
+
+			# You also have to find, in the minified inline javascript:
+			#     se=(e,
+			# and add at the beginning of that function definition:
+			#     if (e.indexOf("377e36_949307df43a148dba4346538db3089d2~mv2.jpg")>-1) { return "IMG_2944_crop.jpeg"; }
+
 #		elif dom_node.getAttribute("data-src"):
 #			dom_node.setAttribute("data-src", "IMG_2944_crop.jpeg")
 #		elif dom_node.getAttribute("class") == "cM88eO":
