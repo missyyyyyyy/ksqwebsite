@@ -20,7 +20,7 @@ def pick_file_path(name):
 		return base.joinpath("index.html")
 
 html_files = [(PurePosixPath("/website").joinpath(item), pick_file_path(item)) for item in [
-	"",
+#	"", # manual change, I think having to do with header image
 	"about",
 	"calendar",
 #	"contact", # contact page is customized to not have a contact form
