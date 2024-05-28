@@ -26,7 +26,8 @@ html_files = [(PurePosixPath("/website").joinpath(item), pick_file_path(item)) f
 #	"contact", # contact page is customized to not have a contact form
 	"media",
 	"photo-2",
-	"photo1"
+	"photo1",
+	"event-details/montreal-qc-christ-church-beaurepaire"
 ]]
 
 yt_embeds = {
